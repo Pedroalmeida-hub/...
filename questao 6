@@ -1,0 +1,80 @@
+#include <stdio.h>
+#define resistividade_prata 1.58
+#define cte_temperatura_prata 0.038
+
+float calc_resistencia(float resistividade , float cte_temperatura,
+float v_temperatura, float v_comprimento, float v_diametro){
+
+float v_resistividade, s_resistencia;
+v_resistividade = resistividade_prata * 1E-6*( 1+ 
+cte_temperatura * (v_temperatura -20 ) );
+s_resistencia = v_resistividade * v_comprimento/ ( 3.1415 *
+v_diametro * v_diametro /4);
+return s_resistencia;
+}
+void mostrar(float s_resistencia){
+  if(s_resistencia>= 1){
+    
+printf("Valor: %f [Ohm]\n",s_resistencia);
+}else if( (s_resistencia* 1e3) >=1){
+  s_resistencia= s_resistencia * 1e3;
+  printf("Valor: %fm [Ohm]\n",s_resistencia);
+  }else if( (s_resistencia* 1e6)>= 1){
+    s_resistencia= s_resistencia* 1e6;
+    printf("Valor: %fu [Ohm]\n",s_resistencia);
+    }else if( (s_resistencia* 1e9)>= 1){
+      s_resistencia= s_resistencia* 1e9;
+      printf("Valor: %fn[Ohm]\n",s_resistencia);
+      }else{
+        printf("Valor: %f[Ohm]\n",s_resistencia);
+        }
+}
+int main(void) {
+  float e_diametro, e_comprimento, e_temperatura, s_resistencia, 
+  e_resistividade, e_cte_temperatura;
+  int e_cod_material;
+  printf("Calculo da resistenciado fio.\n");
+  printf("1 -Prata\n");
+  printf("2 -Cobre\n");
+  printf("3 -Ouro\n");
+  printf("4 -Aluminio\n");
+  printf("5 -Tungstenio\n");
+  printf("6 -Outro\n");
+  printf("Entre com codigodo material [1-5]: ");
+  scanf("%i",&e_cod_material);
+  if( ( 0< e_cod_material) && ( e_cod_material< 7) ){
+    printf("Entre com diametrodo fio [cm]: ");
+    scanf("%f",&e_diametro);
+    if( e_diametro> 0){
+      printf("Entre com comprimento do fio [cm]: ");
+      scanf("%f",&e_comprimento);
+      printf("Entre com temperatura de trabalho [oC]: ");
+      scanf("%f",&e_temperatura);
+      switch(e_cod_material){
+        case 1: calc_resistencia(resistividade_prata, cte_temperatura_prata,e_temperatura, e_comprimento, e_diametro);
+      break;
+      case 2: calc_resistencia(1.72, 0.039, e_temperatura, e_comprimento, e_diametro);
+      break;
+      case 3: calc_resistencia(2.44, 0.034, e_temperatura, e_comprimento, e_diametro);
+break;
+case 4:calc_resistencia(2.92, 0.039, e_temperatura, e_comprimento, e_diametro); 
+break;
+case 5:calc_resistencia(5.6, 0.045, e_temperatura, e_comprimento, e_diametro); 
+break;
+default: printf("Entre com a resistividadodo material 20oC [Ohm.cm]: ");
+scanf("%f",&e_resistividade);
+printf("Entre com o coeficiente de temperatura do material: ");
+scanf("%f",&e_cte_temperatura);
+calc_resistencia(e_resistividade, e_cte_temperatura, e_temperatura, e_comprimento, e_diametro);
+}
+printf("Valor: %f[Ohm]\n",s_resistencia);
+printf("Valor: %e [Ohm]\n",s_resistencia);
+mostrar(s_resistencia);
+}else{
+  printf("Erro. Diametro= 0cm.\n");
+  }
+  }else{
+    printf("Erro no cod. do material.\n");
+  }
+  return 0;
+}
